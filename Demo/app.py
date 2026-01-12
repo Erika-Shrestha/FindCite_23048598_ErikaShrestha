@@ -4,6 +4,8 @@ from PIL import Image
 import random
 import io
 import base64
+import pickle
+import numpy as np
 
 
 # Custom styles
@@ -96,19 +98,17 @@ with col2:
         if citation_text.strip() == "":
             st.warning("Please enter a citation sentence.")
         else:
-            # Replace these with your trained model predictions
-            lr_pred = random.choice(possible_labels)  # Logistic Regression
-            lr_conf = round(random.uniform(0.7, 0.99), 2)
+            prediction = log_model.predict([citation_text])[0]
 
-            sb_pred = random.choice(possible_labels)  # SciBERT
-            sb_conf = round(random.uniform(0.7, 0.99), 2)
+            probs = log_model.predict_proba([citation_text])[0]
+            confidence = np.max(probs)
 
             st.subheader("Prediction from Both Models")
             # Create a table for clear comparison
             pred_df = {
                 "Model": ["Logistic Regression", "SciBERT"],
-                "Predicted Label": [lr_pred, sb_pred],
-                "Confidence Score": [lr_conf, sb_conf]
+                "Predicted Label": [prediction],
+                "Confidence Score": [round(confidence, 2)]
             }
             st.table(pred_df)
 
