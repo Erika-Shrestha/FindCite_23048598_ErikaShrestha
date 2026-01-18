@@ -10,3 +10,5 @@ __pycache__/
 *.pyo
 *.pyd
 
+Demo/scibert_model/tf_model.h5
+Demo/logreg_model.pkl
